@@ -1,0 +1,57 @@
+# Port of the gateway
+server:
+  port: 8080
+
+# Gateway configuration
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: reservations_route
+#          uri: lb://attraction-reservation-microservice
+          uri: http://attraction-reservation-microservice:8081
+          predicates:
+          - Path=/api/reservations/**
+          filters:
+          - RewritePath=/api/reservations(?<segment>), /reservations$\{segment}
+
+        - id: reviews_route
+#          uri: lb://attraction-review-microservice
+          uri: http://attraction-review-microservice:8082
+          predicates:
+          - Path=/api/reviews/**
+          filters:
+          - RewritePath=/api/reviews(?<segment>), /reviews$\{segment}
+
+        - id: emotional_buttons_route
+#          uri: lb://emotional-buttons-microservice
+          uri: http://emotional-buttons-microservice:8083
+          predicates:
+          - Path=/api/emotional-buttons/**
+          filters:
+          - RewritePath=/api/emotional-buttons(?<segment>), /emotional-buttons$\{segment}
+
+        - id: management_route
+#          uri: lb://managerial-notifs-and-control-microservice
+          uri: http://managerial-notifs-and-control-microservice:8084
+          predicates:
+          - Path=/api/management/**
+          filters:
+          - RewritePath=/api/management(?<segment>), /management$\{segment}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh
+
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    healthcheck:
+#      enabled: true
+#    serviceUrl:
+#      defaultZone: ${EUREKA_SERVER}
+#      #defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    lease-renewal-interval-in-seconds: 30
