@@ -7,6 +7,8 @@ spring:
   cloud:
     gateway:
       globalcors:
+        default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         cors-configurations:
           '[/**]':
             allowedOrigins: "*"
@@ -14,6 +16,7 @@ spring:
             - GET
             - POST
             - PUT
+            allowedHeaders: "*"
       routes:
         - id: reservations_route
 #          uri: lb://attraction-reservation-microservice
