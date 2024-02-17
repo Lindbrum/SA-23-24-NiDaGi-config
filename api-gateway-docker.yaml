@@ -6,6 +6,14 @@ server:
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
       routes:
         - id: reservations_route
 #          uri: lb://attraction-reservation-microservice
